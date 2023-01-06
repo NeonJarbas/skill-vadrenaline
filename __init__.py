@@ -1,5 +1,5 @@
 from os.path import join, dirname
-
+import random
 from ovos_plugin_common_play.ocp import MediaType, PlaybackType
 from ovos_utils.log import LOG
 from ovos_utils.parse import fuzzy_match
@@ -23,12 +23,14 @@ class VAdrenalineSkill(OVOSCommonPlaybackSkill):
                                                           "soundtrack", " OST", "opening theme"])
 
     def initialize(self):
-        url = "https://www.youtube.com/c/ViewsterTVMovies"
-        bootstrap = f"https://raw.githubusercontent.com/OpenJarbas/streamindex/main/{self.archive.db.name}.json"
+        bootstrap = "https://github.com/JarbasSkills/skill-vadrenaline/raw/dev/bootstrap.json"
         self.archive.bootstrap_from_url(bootstrap)
-        self.archive.monitor(url)
-        self.archive.setDaemon(True)
-        self.archive.start()
+        self.schedule_event(self._sync_db, random.randint(3600, 24 * 3600))
+
+    def _sync_db(self):
+        url = "https://www.youtube.com/c/ViewsterTVMovies"
+        self.archive.parse_videos(url)
+        self.schedule_event(self._sync_db, random.randint(3600, 24*3600))
 
     # matching
     def match_skill(self, phrase, media_type):
