@@ -12,7 +12,7 @@ from ovos_workshop.skills.common_play import OVOSCommonPlaybackSkill
 class VAdrenalineSkill(OVOSCommonPlaybackSkill):
     def __init__(self, *args, **kwargs):
         self.supported_media = [MediaType.MOVIE]
-        self.skill_icon = self.default_bg = join(dirname(__file__), "ui", "fff_logo.png")
+        self.skill_icon = self.default_bg = join(dirname(__file__), "ui", "vadrenaline_icon.jpg")
         self.archive = JsonStorageXDG("VAdrenaline", subfolder="OCP")
         self.media_type_exceptions = {}
         super().__init__(*args, **kwargs)
